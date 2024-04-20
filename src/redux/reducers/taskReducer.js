@@ -8,11 +8,11 @@ const tasksSlice = createSlice({
     },
     reducers:{
      addTask:(state,action) => {
-        const { title,date,category } = action.payload;
+        const { title,date,category,interval } = action.payload;
         if(category === 'todo'){
             state.todos.push({title,completed:false,_id:Date.now()});
         }else{
-            state.reminders.push({title,date,_id:Date.now()});
+            state.reminders.push({title,date,_id:Date.now(),interval});
         }
      },   
      markCompleted:(state,action) => {

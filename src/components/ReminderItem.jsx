@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 
-const getRemaining = (endtime) => {
+const getRemaining = (endtime,interval) => {
     const today = new Date().getTime();
-    const remindDate = new Date(endtime).getTime();
+    const remindDate = new Date(endtime).getTime() - (interval*60000);
     const diff = remindDate - today;
     const seconds = Math.floor( (diff/1000) % 60 );
     const minutes = Math.floor( (diff/1000/60) % 60 );
@@ -19,7 +19,7 @@ const ReminderItem = ({ task }) => {
     const [remainingTime, setRemainingTime] = useState(null);
     
     useEffect(() => {
-        setRemainingTime(getRemaining(task.date));
+        setRemainingTime(getRemaining(task.date,task.interval));
     },[]);
     
     return (
