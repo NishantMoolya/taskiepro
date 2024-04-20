@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-const getRemaining = (endtime,interval) => {
+const getRemaining = (endtime,interval=0) => {
     const today = new Date().getTime();
     const remindDate = new Date(endtime).getTime() - (interval*60000);
     const diff = remindDate - today;
