@@ -1,20 +1,28 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { addTask } from '../redux/reducers/taskReducer';
 
-const CreateTask = () => {
+const CreateTask = ({ close }) => {
     const initialTask = {
         title:'',
         date:'',
         category:'',
     }
     const [task,setTask] = useState(initialTask);
-    const handleTask = (e) => {
+    const taskDispatch = useDispatch();
+    const handleInput = (e) => {
+        const { name,value } = e.target;
+        setTask(prev => ({...prev,[name]:value}));
+    }
+    const handleTaskSubmit = (e) => {
         e.preventDefault();
             if(task.title.trim() !== ''){
-                console.log('hello');
                 if(task.category === 'reminder' && task.date !== ''){
-                    console.log('remind');
+                    taskDispatch(addTask(task));
+                    close();
                 }else if(task.category === 'todo'){
-                    console.log('todo');
+                    taskDispatch(addTask(task));
+                    close();
                 }else{
                     console.log('error');
                 }
@@ -22,13 +30,13 @@ const CreateTask = () => {
                 console.log('write title');
             }
     }
-    const handleInput = (e) => {
-        const { name,value } = e.target;
-        setTask(prev => ({...prev,[name]:value}));
+    const handleReset = () => {
+        setTask(initialTask);
+        close();
     }
   return (
-    <form onSubmit={handleTask} onReset={() => setTask(initialTask)} onChange={handleInput} className='bg-white rounded-md shadow p-2 flex flex-col gap-2 mx-2'>
-        <textarea type="text" rows={3} name='title' value={task.title} className='placeholder:text-slate-300 outline-none' placeholder='Task description...' />
+    <form onSubmit={handleTaskSubmit} onReset={handleReset} onChange={handleInput} className='bg-white rounded-md shadow p-2 flex flex-col gap-2 mx-2'>
+        <textarea type="text" rows={2} name='title' value={task.title} className='placeholder:text-slate-300 outline-none resize-none' placeholder='Task description...' />
         <div>
         <label htmlFor="todo" className='flex items-center gap-1'><input type="radio" name="category" value={'todo'} checked={task.category === 'todo'} />Todo</label>
         <label htmlFor="reminder" className='flex items-center gap-1'><input type="radio" name="category" value={'reminder'} checked={task.category === 'reminder'} />Reminder</label>
