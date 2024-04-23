@@ -5,7 +5,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 //import { route } from '../animations/routeAnim'
 //import '../styles/login.css'
 
-const Signup = () => {
+const Login = () => {
   const navigate = useNavigate();
   // const auth = useSelector(state => state.user.auth);
   // useEffect(() => {
@@ -17,34 +17,36 @@ const Signup = () => {
   //const baseURL = process.env.REACT_APP_BASE_URL;
   const baseURL = 'http://localhost:8000/v1/api';
   const handleSignup = async (e) => {
-    const { name, email, password } = formData;
+    const { email, password } = formData;
     try {
       e.preventDefault();
-      const data = await fetch(`${baseURL}/user/signup`,{
+      const data = await fetch(`${baseURL}/user/login`,{
         method:"POST",
         headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({name:name.trim(),email:email.trim(),password:password.trim()})   
+        credentials:"include",
+        body:JSON.stringify({email:email.trim(),password:password.trim()})   
        });
       const response = await data.json();
       console.log(response);
       if (data.status === 200) {
-        alert("User already registered");
-        return navigate('/login');
-      } else if (data.status === 201) {
-        alert("User account created");
-        return navigate('/login');
-      } else {
+        alert("Login successful");
+        return navigate('/');
+      } else if (data.status === 400) {
+        return alert("invalid credentials");
+      } else if (data.status === 401) {
+        alert("Not a registered user");
+        return navigate('/signup');
+      }else {
         throw new Error("Server error");
       }
     } catch (err) {
-      console.log(`En error occurred in registering user:${err}`);
+      console.log(`En error occurred in login:${err}`);
       alert("An error occurred in server");
     }
     setFormData(initialData);
   }
 
   let initialData = {
-    name: "",
     email: "",
     password: ""
   }
@@ -57,14 +59,11 @@ const Signup = () => {
       ...formData, [name]: value
     });
   }
-  document.title = "Signup-Join the blogging community";
+  document.title = "Login-Welcome Back to Kudla";
   return (
     <div className='flex justify-center pt-24'>
       <form className='flex flex-col gap-5 py-2 px-3 rounded shadow min-w-72 sm:min-w-80' method='POST' onSubmit={handleSignup}>
-        <h4 className='text-violet-500 text-2xl font-bold text-center'>Signup</h4>
-        <div className='border border-violet-500 rounded py-1 px-2'>
-          <input className='w-full text-base font-semibold outline-none placeholder:text-violet-400' autoComplete="true" placeholder='Username' value={formData.name} name='name' onChange={handleUserInput} required />
-        </div>
+        <h4 className='text-violet-500 text-2xl font-bold text-center'>Login</h4>
         <div className='border border-violet-500 rounded py-1 px-2'>
           <input className='w-full text-base font-semibold outline-none placeholder:text-violet-400' placeholder='Email' autoComplete="true" value={formData.email} name='email' onChange={handleUserInput} required />
         </div>
@@ -80,11 +79,11 @@ const Signup = () => {
                 <path fillRule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" clipRule="evenodd" />
               </svg>}
         </div>
-        <button className='bg-violet-500 text-white text-base font-bold py-1 rounded shadow hover:scale-95' type='submit'>Signup</button>
-        <p className='text-center text-slate-500'>Already have an account?<NavLink className="text-violet-500" to='/login'>Login</NavLink></p>
+        <button className='bg-violet-500 text-white text-base font-bold py-1 rounded shadow hover:scale-95' type='submit'>Login</button>
+        <p className='text-center text-slate-500'>Don't have an account?<NavLink className="text-violet-500" to='/signup'>Signup</NavLink></p>
       </form>
     </div>
   )
 }
 
-export default Signup
+export default Login

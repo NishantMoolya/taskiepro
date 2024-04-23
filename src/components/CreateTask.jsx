@@ -19,10 +19,10 @@ const CreateTask = ({ close }) => {
         e.preventDefault();
             if(task.title.trim() !== ''){
                 if(task.category === 'reminder' && task.date !== '' && task.interval > 0){
-                    taskDispatch(addTask(task));
+                    //taskDispatch(addTask(task));
                     close();
                 }else if(task.category === 'todo'){
-                    taskDispatch(addTask(task));
+                    //taskDispatch(addTask(task));
                     close();
                 }else{
                     console.log('error');

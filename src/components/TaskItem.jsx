@@ -21,7 +21,7 @@ const TaskItem = ({ task }) => {
         <polyline points="20 6 9 17 4 12"></polyline>
       </svg>
       <p className='first-letter:capitalize font-semibold sm:text-base text-sm flex-1'>{task.title}</p>
-      {!task.completed && <button onClick={() => taskDispatch(removeTask(task._id))} className='text-red-500 mt-1 flex self-start'>
+      {!task.completed && <button onClick={() => taskDispatch()} className='text-red-500 mt-1 flex self-start'>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
           <path strokeLinecap="round" strokeLinejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
         </svg>

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getAllTasks,addTask, updateTask, removeTask } from "../api/taskApi";
 
 const tasksSlice = createSlice({
     name:'tasks',
@@ -7,27 +8,39 @@ const tasksSlice = createSlice({
         reminders:[]
     },
     reducers:{
-     addTask:(state,action) => {
-        const { title,date,category,interval } = action.payload;
-        if(category === 'todo'){
-            state.todos.push({title,completed:false,_id:Date.now()});
-        }else{
-            state.reminders.push({title,date,_id:Date.now(),interval});
-        }
-     },   
      markCompleted:(state,action) => {
         state.todos.map(task => {if(task._id === action.payload) task.completed = true});
     },
-    removeTask:(state,action) => {
-        const ind = state.todos.findIndex(task => task._id === action.payload);
-        state.todos.splice(ind,1);
+    updateTitle:(state,action) => {
+        state.todos.map(task => {if(task._id === action.payload._id) task.title = action.payload.title});
     }
+},
+extraReducers:(builder) => {
+    builder.addCase(getAllTasks.fulfilled, (state,action) => {
+        state.todos = action.payload.todos;
+        state.reminders = action.payload.reminders;
+    });
+    builder.addCase(addTask.fulfilled, (state,action) => {
+        const { task } = action.payload;
+        if(task != null){
+            if(action.payload.category === "todo"){
+                state.todos = [...state.todos,task];
+            }else if(action.payload.category === "reminder"){
+                state.reminders = [...state.reminders,task];
+            }
+        }
+    });
+    builder.addCase(updateTask.fulfilled, (state,action) => {
 
+    });
+    builder.addCase(removeTask.fulfilled, (state,action) => {
+
+    });
 }
 
 });
 
-export const { addTask,markCompleted,removeTask } = tasksSlice.actions;
+export const { markCompleted,updateTitle } = tasksSlice.actions;
 export default tasksSlice.reducer;
 
 
