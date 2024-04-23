@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom'
+import { login } from '../redux/reducers/userReducer';
 //import { useSelector } from 'react-redux'
 //import { motion } from 'framer-motion'
 //import { route } from '../animations/routeAnim'
@@ -7,6 +9,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 
 const Login = () => {
   const navigate = useNavigate();
+  const userDispatch = useDispatch();
   // const auth = useSelector(state => state.user.auth);
   // useEffect(() => {
   //   if(auth) return navigate(-1);
@@ -14,8 +17,8 @@ const Login = () => {
 
   const [pass, setPass] = useState(true);
 
-  //const baseURL = process.env.REACT_APP_BASE_URL;
-  const baseURL = 'http://localhost:8000/v1/api';
+  const baseURL = process.env.REACT_APP_BASE_URL;
+  //const baseURL = 'http://localhost:8000/v1/api';
   const handleSignup = async (e) => {
     const { email, password } = formData;
     try {
@@ -27,9 +30,10 @@ const Login = () => {
         body:JSON.stringify({email:email.trim(),password:password.trim()})   
        });
       const response = await data.json();
-      console.log(response);
+      //console.log(response);
       if (data.status === 200) {
         alert("Login successful");
+        userDispatch(login(response.userInfo));
         return navigate('/');
       } else if (data.status === 400) {
         return alert("invalid credentials");

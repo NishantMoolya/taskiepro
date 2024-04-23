@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { addTask } from '../redux/reducers/taskReducer';
+import { addTask } from '../redux/api/taskApi';
 
 const CreateTask = ({ close }) => {
     const initialTask = {
@@ -19,16 +19,16 @@ const CreateTask = ({ close }) => {
         e.preventDefault();
             if(task.title.trim() !== ''){
                 if(task.category === 'reminder' && task.date !== '' && task.interval > 0){
-                    //taskDispatch(addTask(task));
+                    taskDispatch(addTask(task));
                     close();
                 }else if(task.category === 'todo'){
-                    //taskDispatch(addTask(task));
+                    taskDispatch(addTask(task));
                     close();
                 }else{
                     console.log('error');
                 }
             }else{
-                console.log('write title');
+                alert("Title of the task is needed.");
             }
     }
     const handleReset = () => {

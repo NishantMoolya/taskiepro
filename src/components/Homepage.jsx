@@ -33,16 +33,14 @@ const Homepage = () => {
         const progress = Math.ceil(completed/totaltodo*100);
         return { progress,completed,totaltodo,pending }
     }, [tasks.todos]);
-    //const pending = useMemo(() => tasks.todos.filter(todo => todo.completed === false).length, [tasks.todos]);
     const scheduled = useMemo(() => tasks.reminders.length, [tasks.reminders]);
-    //const completed = useMemo(() => tasks.todos.filter(todo => todo.completed === true).length, [tasks.todos]);
 
     return (
         <div className='flex flex-col gap-3'>
             <div className='flex items-center px-2 sm:px-0'>
-                <img src={avatar} alt="user avatar" className='w-16 h-16 object-cover self-start' />
+                <img src={"https://res.cloudinary.com/dandihqnb/image/upload/v1710670262/seatq70gmzy8p6imw1le.png"} alt="user avatar" className='w-16 h-16 object-cover self-start' />
                 <div className='flex flex-col'>
-                    <p className='text-xl font-bold'>Hi, Nishant🖐️</p>
+                    <p className='text-xl font-bold'>Hi, <span className='first-letter:capitalize'>Nishant🖐️</span></p>
                     <p className='font-semibold text-base'>What are you planning to do today?</p>
                 </div>
             </div>

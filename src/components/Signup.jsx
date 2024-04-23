@@ -14,8 +14,8 @@ const Signup = () => {
 
   const [pass, setPass] = useState(true);
 
-  //const baseURL = process.env.REACT_APP_BASE_URL;
-  const baseURL = 'http://localhost:8000/v1/api';
+  const baseURL = process.env.REACT_APP_BASE_URL;
+  //const baseURL = 'http://localhost:8000/v1/api';
   const handleSignup = async (e) => {
     const { name, email, password } = formData;
     try {
