@@ -38,10 +38,10 @@ const Homepage = () => {
     return (
         <div className='flex flex-col gap-3'>
             <div className='flex items-center px-2 sm:px-0'>
-                <img src={"https://res.cloudinary.com/dandihqnb/image/upload/v1710670262/seatq70gmzy8p6imw1le.png"} alt="user avatar" className='w-16 h-16 object-cover self-start' />
+                <img src={avatar} alt="user avatar" className='w-16 h-16 object-cover self-start' />
                 <div className='flex flex-col'>
                     <p className='text-xl font-bold'>Hi, <span className='first-letter:capitalize'>Nishant🖐️</span></p>
-                    <p className='font-semibold text-base'>What are you planning to do today?</p>
+                    <p className='font-semibold text-base text-slate-500'>What are you planning to do today?</p>
                 </div>
             </div>
             {!showInput && <button onClick={() => setShowInput(true)} className='uppercase bg-violet-500 text-sm font-semibold py-1 px-3 rounded shadow-md text-white self-center sm:self-end mx-2 flex items-center justify-center gap-1'>
@@ -85,18 +85,18 @@ const Homepage = () => {
             <div className='flex flex-col gap-4'>
                 <div className='flex flex-col'>
                     <p className='bg-white py-1 px-3 text-lg font-semibold capitalize sm:border rounded-t-xl text-violet-500'>Todos({taskData.totaltodo})</p>
-                    <div className='flex flex-col sm:flex-row bg-slate-100 py-2 sm:rounded-b-xl'>
+                    {tasks.todos.length !== 0 && <div className='flex flex-col sm:flex-row bg-slate-100 py-2 sm:rounded-b-xl'>
                         <TaskSubContainer list={tasks.todos?.filter(val => val.completed === false)} completed={false} />
                         <TaskSubContainer list={tasks.todos?.filter(val => val.completed === true)} completed={true} />
-                    </div>
+                    </div>}
                 </div>
                 <div className='flex flex-col'>
                     <p className='bg-white py-1 px-3 text-lg font-semibold capitalize sm:border rounded-t-xl text-violet-500'>Reminders({scheduled})</p>
-                    <div className='flex flex-col gap-2 bg-slate-100 py-4 px-2 sm:rounded-b-xl'>
+                    {tasks.reminders.length !== 0 && <div className='flex flex-col gap-2 bg-slate-100 py-4 px-2 sm:rounded-b-xl'>
                         {
                             tasks.reminders?.map(task => <ReminderItem key={task._id} task={task} />)
                         }
-                    </div>
+                    </div>}
                 </div>
             </div>
         </div>

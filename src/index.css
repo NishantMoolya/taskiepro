@@ -20,3 +20,8 @@ code {
 ::-webkit-scrollbar{
   display: none;
 }
+.active{
+  background-color: #f5f3ff;
+  color: #8b5cf6;
+  border-radius: 6px;
+}

@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { addTask } from '../redux/api/taskApi';
+import DatePicker from 'react-date-picker';
+import 'react-date-picker/dist/DatePicker.css';
+import 'react-calendar/dist/Calendar.css';
 
 const CreateTask = ({ close }) => {
     const initialTask = {
@@ -19,13 +22,22 @@ const CreateTask = ({ close }) => {
         e.preventDefault();
             if(task.title.trim() !== ''){
                 if(task.category === 'reminder' && task.date !== '' && task.interval > 0){
-                    taskDispatch(addTask(task));
-                    close();
+                    console.log(task.date);
+                    const diff = new Date(task.date).getTime() - task.interval*60000;
+                    const eligible = diff - new Date().getTime();
+                    if(Math.sign(eligible) !== -1){
+                        taskDispatch(addTask(task));
+                        close();
+                        //console.log("eligible",eligible);
+                    }else{
+                        alert("Choose a proper time gap between reminding time and interval");
+                    }
                 }else if(task.category === 'todo'){
                     taskDispatch(addTask(task));
                     close();
                 }else{
                     console.log('error');
+                    alert("choose a category");
                 }
             }else{
                 alert("Title of the task is needed.");
@@ -43,7 +55,7 @@ const CreateTask = ({ close }) => {
         <label htmlFor="reminder" className='flex items-center gap-1'><input type="radio" name="category" value={'reminder'} checked={task.category === 'reminder'} />Reminder</label>
         </div>
         <div className='flex flex-col sm:flex-row justify-between sm:items-center flex-wrap gap-2'>
-        {task.category === 'reminder'?<div className='flex flex-col sm:flex-row sm:items-center gap-2'><input type="datetime-local" name='date' value={task.date} className='py-1 px-2 border rounded-lg outline-none' />
+        {task.category === 'reminder'?<div className='flex flex-col sm:flex-row sm:items-center gap-2'>
                                         <div className='py-1 px-2 border rounded-lg flex'>
                                         <select name="interval" className='outline-none flex-1'>
                                             <option value="0">Remind before?</option>
@@ -51,6 +63,7 @@ const CreateTask = ({ close }) => {
                                             <option value="30">30 minutes before</option>
                                         </select>
                                         </div>
+                                        <input type="datetime-local" name='date' value={task.date} min={new Date().toISOString().slice(0,10)} className='py-1 px-2 border rounded-lg outline-none' />
                                         </div>:<span></span>}
         <div className='self-end flex gap-2'>
             <button type='reset' className='uppercase text-sm bg-red-50 font-semibold rounded-lg py-1 px-3 text-red-500'>cancel</button>
