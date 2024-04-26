@@ -1,11 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const baseURL = process.env.REACT_APP_BASE_URL;
-//const baseURL = "http://localhost:8000/v1/api";
 
-const getAllTasks = createAsyncThunk("getAllTasks", async () => {
+const getAllTasks = createAsyncThunk("getAllTasks", async (category) => {
     try {
-        const res = await fetch(`${baseURL}/task`,{
+        const res = await fetch(`${baseURL}/task/${category}`,{
             method:"GET",
             headers:{"Content-Type":"application/json"},
             credentials:'include'
@@ -13,11 +12,11 @@ const getAllTasks = createAsyncThunk("getAllTasks", async () => {
         if(res.status === 200){
             return await res.json();
         }else{
-            return { todos:[],reminders:[] };
+            return { category:null,payload:null };
         }
     } catch (err) {
         console.log(`an error in getting tasks:${err}`);
-        return { todos:[],reminders:[] };
+        return { category:null,payload:null };
     }
 });
 
@@ -77,13 +76,13 @@ const updateTask = createAsyncThunk("updateTask", async (task) => {
     }
 });
 
-const removeTask = createAsyncThunk("removeTask", async (_id,category) => {
+const removeTask = createAsyncThunk("removeTask", async (details) => {
     try {
         const res = await fetch(`${baseURL}/task`,{
             method:"DELETE",
             headers:{"Content-Type":"application/json"},
             credentials:'include',
-            body:JSON.stringify({_id,category})
+            body:JSON.stringify(details)
         });
         if(res.status === 204){
             return await res.json();

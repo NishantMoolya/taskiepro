@@ -1,21 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const baseURL = process.env.REACT_APP_BASE_URL;
-//const baseURL = "http://localhost:8000/v1/api";
-
-// const authenticate = createAsyncThunk("authUser", async () => {
-//     try {
-//         const res = await fetch(`${baseURL}/user/auth`,{
-//             method:"GET",
-//             headers:{"Content-Type":"application/json"},
-//             credentials:'include'
-//         });
-//         return await res.json();
-//     } catch (err) {
-//         console.log(`an error in authenticating user:${err}`);
-//         return {authenticate:false};
-//     }
-// });
 
 const userLogout = createAsyncThunk("logout", async () => {
     try {
@@ -24,9 +9,14 @@ const userLogout = createAsyncThunk("logout", async () => {
             headers:{"Content-Type":"application/json"},
             credentials:'include'
         });
-        return await res.json();
+        if(res.status === 200){
+            return await res.json();
+        }else{
+            throw new Error("server error");
+        }
     } catch (err) {
         console.log(`an error in authenticating user:${err}`);
+        return { authenticate:true }
     }
 });
 
@@ -40,6 +30,7 @@ const getUserProfile = createAsyncThunk("userProfile", async () => {
         return await res.json();
     } catch (err) {
         console.log(`an error in authenticating user:${err}`);
+        return { profile:{},authenticate:false };
     }
 });
 

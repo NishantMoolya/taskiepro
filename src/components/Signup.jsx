@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom'
-//import { useSelector } from 'react-redux'
 //import { motion } from 'framer-motion'
 //import { route } from '../animations/routeAnim'
-//import '../styles/login.css'
 
 const Signup = () => {
   const navigate = useNavigate();
-  // const auth = useSelector(state => state.user.auth);
-  // useEffect(() => {
-  //   if(auth) return navigate(-1);
-  // },[auth])
+  const auth = useSelector(state => state.user.auth);
+  useEffect(() => {
+    if(auth) return navigate('/');
+  },[auth])
 
   const [pass, setPass] = useState(true);
 
   const baseURL = process.env.REACT_APP_BASE_URL;
-  //const baseURL = 'http://localhost:8000/v1/api';
   const handleSignup = async (e) => {
     const { name, email, password } = formData;
     try {
@@ -57,10 +55,9 @@ const Signup = () => {
       ...formData, [name]: value
     });
   }
-  document.title = "Signup-Join the blogging community";
-  return (
-    <div className='flex justify-center pt-24'>
-      <form className='flex flex-col gap-5 py-2 px-3 rounded shadow min-w-72 sm:min-w-80' method='POST' onSubmit={handleSignup}>
+  document.title = "Signup-Increase your productivity by joining with our app";
+   return (<div className='flex justify-center pt-24'>
+      {!auth && <form className='flex flex-col gap-5 py-2 px-3 rounded shadow min-w-72 sm:min-w-80' method='POST' onSubmit={handleSignup}>
         <h4 className='text-violet-500 text-2xl font-bold text-center'>Signup</h4>
         <div className='border border-violet-500 rounded py-1 px-2'>
           <input className='w-full text-base font-semibold outline-none placeholder:text-violet-400' autoComplete="true" placeholder='Username' value={formData.name} name='name' onChange={handleUserInput} required />
@@ -82,9 +79,8 @@ const Signup = () => {
         </div>
         <button className='bg-violet-500 text-white text-base font-bold py-1 rounded shadow hover:scale-95' type='submit'>Signup</button>
         <p className='text-center text-slate-500'>Already have an account?<NavLink className="text-violet-500" to='/login'>Login</NavLink></p>
-      </form>
-    </div>
-  )
+      </form>}
+    </div>)
 }
 
 export default Signup

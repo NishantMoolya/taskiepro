@@ -22,19 +22,19 @@ const CreateTask = ({ close }) => {
         e.preventDefault();
             if(task.title.trim() !== ''){
                 if(task.category === 'reminder' && task.date !== '' && task.interval > 0){
-                    console.log(task.date);
                     const diff = new Date(task.date).getTime() - task.interval*60000;
                     const eligible = diff - new Date().getTime();
                     if(Math.sign(eligible) !== -1){
                         taskDispatch(addTask(task));
                         close();
-                        //console.log("eligible",eligible);
+                        setTask(initialTask);
                     }else{
                         alert("Choose a proper time gap between reminding time and interval");
                     }
                 }else if(task.category === 'todo'){
                     taskDispatch(addTask(task));
                     close();
+                    setTask(initialTask);
                 }else{
                     console.log('error');
                     alert("choose a category");
