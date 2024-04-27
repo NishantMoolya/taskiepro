@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom'
+import ButtonSpinner from './ButtonSpinner';
 //import { motion } from 'framer-motion'
 //import { route } from '../animations/routeAnim'
 
 const Signup = () => {
   const navigate = useNavigate();
   const auth = useSelector(state => state.user.auth);
+  const [confirming,setConfirming] = useState(false);
   useEffect(() => {
     if(auth) return navigate('/');
   },[auth])
@@ -18,23 +20,28 @@ const Signup = () => {
     const { name, email, password } = formData;
     try {
       e.preventDefault();
+      setConfirming(true);
       const data = await fetch(`${baseURL}/user/signup`,{
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify({name:name.trim(),email:email.trim(),password:password.trim()})   
        });
       const response = await data.json();
-      console.log(response);
+      //console.log(response);
       if (data.status === 200) {
+        setConfirming(false);
         alert("User already registered");
         return navigate('/login');
       } else if (data.status === 201) {
+        setConfirming(false);
         alert("User account created");
         return navigate('/login');
       } else {
+        setConfirming(false);
         throw new Error("Server error");
       }
     } catch (err) {
+      setConfirming(false);
       console.log(`En error occurred in registering user:${err}`);
       alert("An error occurred in server");
     }
@@ -77,8 +84,9 @@ const Signup = () => {
                 <path fillRule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" clipRule="evenodd" />
               </svg>}
         </div>
-        <button className='bg-violet-500 text-white text-base font-bold py-1 rounded shadow hover:scale-95' type='submit'>Signup</button>
-        <p className='text-center text-slate-500'>Already have an account?<NavLink className="text-violet-500" to='/login'>Login</NavLink></p>
+        {!confirming?<button className='bg-violet-500 text-white text-base font-bold py-1 rounded shadow hover:scale-95' type='submit'>Signup</button>
+        :<div className='bg-white w-6 self-center text-violet-500'><ButtonSpinner /></div>}
+        <p className='text-center text-slate-500'>Already have an account? <NavLink className="text-violet-500" to='/login'>Login</NavLink></p>
       </form>}
     </div>)
 }

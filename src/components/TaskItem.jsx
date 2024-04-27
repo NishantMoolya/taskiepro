@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { deleteTask, markCompleted } from '../redux/reducers/taskReducer';
 import { removeTask, updateTask } from '../redux/api/taskApi';
@@ -21,6 +21,7 @@ const TaskItem = ({ task }) => {
   }
   const handleCompleted = () => {
     taskDispatch(updateTask({ ...editedTask, completed: completed }));
+    taskDispatch(markCompleted({_id:task._id,completed}));
     setCompleted(prev => !prev);
   }
   const handleDelete = () => {

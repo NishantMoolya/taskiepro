@@ -8,6 +8,7 @@ import { getAllTasks } from '../redux/api/taskApi'
 import PrivateRoute from './PrivateRoute'
 import TodosSkeleton from './TodosSkeleton'
 import Spinner from './Spinner'
+import ReplySpinner from './ButtonSpinner'
 const Login = lazy(() => import('./Login'));
 const Signup = lazy(() => import('./Signup'));
 const ReminderPage = lazy(() => import('./ReminderPage'));
@@ -31,7 +32,7 @@ const App = () => {
                 <div className='flex-1 sm:p-2 h-full overflow-scroll scroll-smooth'>
                     <Routes>  
                         <Route path='/' element={<PrivateRoute />}>
-                            <Route index element={auth ? <Homepage /> : <About />}></Route>
+                            <Route index element={auth ? <Homepage /> : <Suspense fallback={<Spinner />}><About /></Suspense>}></Route>
                             <Route path='signup' element={<Suspense fallback={<Spinner />}><Signup /></Suspense>}></Route>
                             <Route path='login' element={<Suspense fallback={<Spinner />}><Login /></Suspense>}></Route>
                             <Route path='about' element={<Suspense fallback={<Spinner />}><About /></Suspense>}></Route>

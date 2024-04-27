@@ -10,7 +10,6 @@ import TodosSkeleton from './TodosSkeleton';
 
 const Homepage = () => {
     const tasks = useSelector(state => state.tasks);
-    const [showInput, setShowInput] = useState(false);
     const taskDispatch = useDispatch();
     const user = useSelector(state => state.user);
 
@@ -36,12 +35,7 @@ const Homepage = () => {
                     <p className='font-semibold text-base text-slate-500'>What are you planning to do today?</p>
                 </div>
             </div>
-            {!showInput && <button onClick={() => setShowInput(true)} className='uppercase bg-violet-500 text-sm font-semibold py-1 px-3 rounded shadow-md text-white self-center sm:self-end mx-2 flex items-center justify-center gap-1'>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
-                Create</button>}
-            {showInput && <CreateTask close={() => setShowInput(false)} />}
+            <CreateTask />
             <div className='flex flex-wrap gap-2 px-2 sm:px-0'>
                 <MetaBlock color={'bg-orange-500'} label={'pending'} value={taskData.pending}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">

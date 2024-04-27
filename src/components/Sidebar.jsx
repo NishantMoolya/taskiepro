@@ -2,9 +2,11 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom'
 import { userLogout } from '../redux/api/userApi';
+import ButtonSpinner from './ButtonSpinner';
 
 const Sidebar = () => {
     const auth = useSelector(state => state.user.auth);
+    const isLoading = useSelector(state => state.user.isLoading);
     const userDispatch = useDispatch();
     return (
         <div className='sm:pl-2 sm:py-2 w-full z-20 relative'>
@@ -54,14 +56,14 @@ const Sidebar = () => {
                         <p>Login</p>
                     </li>
                 </NavLink></>}
-                {auth && <li className='flex-1 flex mt-8' onClick={() => userDispatch(userLogout())}>
+                {auth?isLoading?<div className='text-red-500 w-8 h-8 self-center p-1'><ButtonSpinner /></div>:<li className='flex-1 flex mt-8' onClick={() => userDispatch(userLogout())}>
                     <div className='self-end flex gap-2 py-2 px-3 rounded-md bg-red-50 text-red-500 ml-auto items-center w-full justify-center hover:bg-red-500 hover:text-white'>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
                         </svg>
                         <p>Logout</p>
                     </div>
-                </li>}
+                </li>:null}
             </ul>
         </div>
     )
