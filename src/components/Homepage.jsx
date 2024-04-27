@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import avatar from '../assets/person1.jpg'
 import ProgressBar from './ProgressBar';
 import CreateTask from './CreateTask';
